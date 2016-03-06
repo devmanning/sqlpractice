@@ -1,3 +1,32 @@
+use AdventureWorks2012
+go
 
-select * from
+select e.*
+	   ,c.*
 
+from
+    [HumanResources].[Employee] E
+
+
+inner join 
+
+
+(Select a.*
+       ,b.AddressID
+	   ,b.AddressLine1
+	   ,b.AddressLine2
+	   ,b.City
+	   ,b.PostalCode
+	   ,b.StateProvinceID
+from
+      Person.Person a
+inner join 
+	  Person.Address b
+on a.BusinessEntityID = b.AddressID) C
+
+on e.BusinessEntityID = c.BusinessEntityID
+
+--select * from Person.Address
+
+--select * from Person.Person
+     
