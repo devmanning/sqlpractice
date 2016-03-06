@@ -1,32 +1,71 @@
 use AdventureWorks2012
 go
 
-select e.*
-	   ,c.*
+--select e.*
+--	   ,c.*
 
-from
-    [HumanResources].[Employee] E
-
-
-inner join 
+--from
+--    [HumanResources].[Employee] E
 
 
-(Select a.*
-       ,b.AddressID
-	   ,b.AddressLine1
-	   ,b.AddressLine2
-	   ,b.City
-	   ,b.PostalCode
-	   ,b.StateProvinceID
-from
-      Person.Person a
-inner join 
-	  Person.Address b
-on a.BusinessEntityID = b.AddressID) C
+--inner join 
 
-on e.BusinessEntityID = c.BusinessEntityID
+
+--(Select a.*
+--       ,b.AddressID
+--	   ,b.AddressLine1
+--	   ,b.AddressLine2
+--	   ,b.City
+--	   ,b.PostalCode
+--	   ,b.StateProvinceID
+--from
+--      Person.Person a
+--inner join 
+--	  Person.Address b
+--on a.BusinessEntityID = b.AddressID) C
+
+--on e.BusinessEntityID = c.BusinessEntityID
 
 --select * from Person.Address
 
 --select * from Person.Person
+
+
+with
+
+cte_add
+as
+	(select e.BusinessEntityID
+			,e.JobTitle
+    from
+		HumanResources.Employee E
+		where e.CurrentFlag =1
+	),
+cte_per
+as
+	(Select a.BusinessEntityID
+		   ,a.FirstName
+		   ,a.LastName	
+		   ,b.AddressID
+		   ,b.AddressLine1
+		   ,b.AddressLine2
+		   ,b.City
+		   ,b.PostalCode
+		   ,b.StateProvinceID
+	from
+		  Person.Person a
+	inner join 
+		  Person.Address b
+	on a.BusinessEntityID = b.AddressID
+	)
+
+
+select cte_add.*
+      ,cte_per.*
+ from cte_add 
+      left join
+	  cte_per
+on cte_add.BusinessEntityID = cte_per.BusinessEntityID
+
+
      
